@@ -1,0 +1,26 @@
+{
+  "quizzes": [
+    {
+      "id": "85db3369-eb60-4f3a-9017-7259b3a31ed0",
+      "lessonId": "1",
+      "title": "    MATHEMATICS",
+      "instructions": "",
+      "timeLimit": 0,
+      "totalMarks": 0,
+      "questions": [
+        {
+          "question": "GHHJK",
+          "options": [
+            "h",
+            "76",
+            "Y6",
+            "76"
+          ],
+          "correctAnswer": 3
+        }
+      ],
+      "createdAt": "2026-08-24T07:52:34.488Z",
+      "updatedAt": "2026-08-24T07:52:34.488Z"
+    }
+  ]
+}

@@ -1,0 +1,611 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EP APPEC · Primary 5 Mathematics Learning Studio</title>
+<style>
+:root{
+  --navy:#16225a; --blue:#2563eb; --purple:#6d28d9; --green:#16a34a; --orange:#f97316;
+  --pink:#db2777; --teal:#0d9488; --bg:#f1f5ff; --card:#ffffff; --muted:#5b6482; --line:#e3e8f6;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--navy);line-height:1.5}
+#wrap{max-width:720px;margin:0 auto;padding:12px 14px 96px}
+header.top{background:linear-gradient(135deg,#2563eb,#6d28d9);color:#fff;border-radius:18px;padding:16px 18px;margin-bottom:14px}
+header.top small{opacity:.85;letter-spacing:.08em;text-transform:uppercase;font-weight:700;font-size:11px}
+header.top h1{margin:2px 0 2px;font-size:22px;line-height:1.2}
+header.top p{margin:0;font-size:13px;opacity:.9}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px;box-shadow:0 1px 3px rgba(22,34,90,.05)}
+h2{font-size:19px;margin:6px 0 10px}
+h3{font-size:16px;margin:0 0 6px}
+.muted{color:var(--muted);font-size:14px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 6px;text-align:center}
+.stat b{display:block;font-size:20px}
+.stat span{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.unit{border:0;color:#fff;border-radius:16px;padding:14px 12px;text-align:left;font:inherit;cursor:pointer;min-height:104px;display:flex;flex-direction:column;justify-content:space-between}
+.unit .ic{font-size:26px}
+.unit b{font-size:15px;line-height:1.25;display:block}
+.unit small{opacity:.92;font-size:12px}
+.btn{display:inline-block;border:0;background:var(--blue);color:#fff;font:inherit;font-weight:700;padding:12px 18px;border-radius:12px;cursor:pointer;font-size:15px}
+.btn.alt{background:#fff;color:var(--blue);border:2px solid var(--blue)}
+.btn.green{background:var(--green)}
+.btn.orange{background:var(--orange)}
+.btn.block{display:block;width:100%;margin-top:8px}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.opt{display:block;width:100%;text-align:left;background:#fff;border:2px solid var(--line);border-radius:12px;padding:13px 14px;margin-bottom:9px;font:inherit;font-size:16px;color:var(--navy);cursor:pointer}
+.opt:active{transform:scale(.99)}
+.opt.ok{background:#dcfce7;border-color:var(--green)}
+.opt.bad{background:#fee2e2;border-color:#dc2626}
+.opt.picked{border-color:var(--blue);background:#eaf0ff}
+.bar{height:10px;background:#e5eafc;border-radius:99px;overflow:hidden}
+.bar>i{display:block;height:100%;background:linear-gradient(90deg,#2563eb,#6d28d9);border-radius:99px}
+.qtop{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--muted);margin-bottom:6px}
+.timer{font-weight:800;color:var(--orange)}
+.q{font-size:20px;font-weight:700;margin:12px 0 14px}
+.fb{border-radius:12px;padding:10px 12px;margin:6px 0 10px;font-size:14px}
+.fb.ok{background:#dcfce7}.fb.bad{background:#fee2e2}
+.lesson p{margin:6px 0}
+.lesson .ex{background:#eef2ff;border-left:4px solid var(--blue);border-radius:8px;padding:8px 12px;margin:8px 0;font-size:15px}
+.lesson ul{padding-left:20px;margin:6px 0}
+.back{background:none;border:0;color:var(--blue);font:inherit;font-weight:700;padding:4px 0 8px;cursor:pointer}
+.big{font-size:46px;text-align:center;margin:6px 0}
+.center{text-align:center}
+.badges{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.badge{border:1px solid var(--line);border-radius:14px;padding:10px;text-align:center;background:#fff}
+.badge.off{opacity:.38;filter:grayscale(1)}
+.badge .e{font-size:30px}
+.badge b{display:block;font-size:14px}
+.badge small{color:var(--muted);font-size:12px}
+.promo{background:linear-gradient(135deg,#ecfdf5,#eef2ff);border:1px solid #c7ecd9;text-align:center;padding:18px 14px}
+.promo .kick{color:#0f766e;font-weight:800;letter-spacing:.1em;font-size:12px;text-transform:uppercase}
+.promo h2{font-size:26px;margin:4px 0}
+.promo h2 span{color:var(--purple)}
+.big-game{font-size:44px;font-weight:800;text-align:center;margin:14px 0;letter-spacing:.02em}
+.opts2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opts2 .opt{text-align:center;font-size:22px;font-weight:700;margin:0}
+input.name{width:100%;padding:11px 12px;font:inherit;font-size:16px;border:2px solid var(--line);border-radius:12px;margin:6px 0}
+nav.bottom{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:6px 4px calc(6px + env(safe-area-inset-bottom));z-index:10}
+nav.bottom button{background:none;border:0;font:inherit;color:var(--muted);font-size:11px;font-weight:700;padding:4px 8px;border-radius:10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:1px;min-width:56px}
+nav.bottom button .i{font-size:20px}
+nav.bottom button.on{color:var(--blue);background:#eaf0ff}
+.pill{display:inline-block;background:#fff7ed;color:#c2410c;border-radius:99px;padding:2px 10px;font-size:12px;font-weight:700}
+.rev{border-top:1px solid var(--line);padding:8px 0;font-size:14px}
+@media(min-width:560px){.badges{grid-template-columns:repeat(4,1fr)}.grid{grid-template-columns:repeat(3,1fr)}}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <header class="top">
+    <small id="siteName"></small>
+    <h1 id="siteTitle"></h1>
+    <p id="siteTag"></p>
+  </header>
+  <main id="app"></main>
+</div>
+<nav class="bottom" id="nav">
+  <button data-v="home"><span class="i">🏠</span>Home</button>
+  <button data-v="practice"><span class="i">✏️</span>Practice</button>
+  <button data-v="play"><span class="i">🎮</span>Play</button>
+  <button data-v="exam"><span class="i">📝</span>Exam</button>
+  <button data-v="progress"><span class="i">🏆</span>Progress</button>
+</nav>
+
+<script>
+/* ============ SETTINGS: change these to match your site ============ */
+const CONFIG = {
+  siteName: "EP APPEC",
+  title: "Primary 5 Mathematics Learning Studio",
+  tagline: "2026/2027 · Learn · Practice · Play · Excel",
+  whatsappNumber: "0792441035",
+  contactUrl: "https://wa.me/250792441035?text=" + encodeURIComponent("Hello EP APPEC, I would like the offline version of the P5 Mathematics Learning Studio.")
+};
+
+/* ============ CONTENT: add or edit units and questions here ============ */
+const UNITS = [
+ { id:"u1", icon:"🔢", title:"Whole Numbers up to 1,000,000", color:"#2563eb",
+   lesson:`<p>We read, write, compare and calculate with whole numbers up to <b>1,000,000</b>.</p>
+   <div class="ex">Places: Units · Tens · Hundreds · Thousands · Ten thousands · Hundred thousands</div>
+   <p><b>Comparing:</b> the number with more digits is bigger. If the digits are equal in number, compare from the left.</p>
+   <p><b>Quick multiplication:</b></p>
+   <ul><li>× 10, × 100, × 1,000: move the digits left (add zeros).</li>
+   <li>× 5 = (× 10) ÷ 2 · × 50 = (× 100) ÷ 2</li>
+   <li>× 9 = (× 10) − the number</li></ul>
+   <div class="ex">48 × 50 = 4,800 ÷ 2 = <b>2,400</b></div>`,
+   qs:[
+    {q:"What is the value of the digit 6 in 364,215?", o:["6,000","60,000","600,000","600"], a:1, e:"6 is in the ten thousands place, so its value is 60,000."},
+    {q:"Arrange from smallest to largest: 45,302 ; 45,032 ; 45,320", o:["45,032 ; 45,302 ; 45,320","45,302 ; 45,032 ; 45,320","45,320 ; 45,302 ; 45,032","45,032 ; 45,320 ; 45,302"], a:0, e:"All start with 45. Compare the hundreds: 0, then 3, then 3. For 45,302 and 45,320 compare the tens: 0 is less than 2."},
+    {q:"245,600 + 138,750 = ?", o:["374,350","384,350","384,250","383,350"], a:1, e:"245,600 + 138,750 = 384,350."},
+    {q:"500,000 − 187,450 = ?", o:["312,550","322,550","313,550","312,450"], a:0, e:"500,000 − 187,450 = 312,550."},
+    {q:"Use a quick method: 48 × 50 = ?", o:["2,400","240","2,040","4,800"], a:0, e:"48 × 100 = 4,800. Half of 4,800 is 2,400."}
+   ]},
+ { id:"u2", icon:"🌡️", title:"Addition & Subtraction of Integers", color:"#16a34a",
+   lesson:`<p><b>Integers</b> are whole numbers that can be positive, negative or zero: … −3, −2, −1, 0, 1, 2, 3 …</p>
+   <p>On a number line, positive numbers are to the right of 0 and negative numbers are to the left.</p>
+   <ul><li>Adding a positive number moves right. Adding a negative number moves left.</li>
+   <li>Subtracting a negative number is the same as adding.</li>
+   <li><b>Additive inverse:</b> a number plus its inverse makes 0. Example: 5 + (−5) = 0.</li></ul>
+   <div class="ex">−3 + 5 = <b>2</b> · 4 − 9 = <b>−5</b> · 5 − (−2) = 5 + 2 = <b>7</b></div>`,
+   qs:[
+    {q:"−3 + 5 = ?", o:["−8","2","−2","8"], a:1, e:"Start at −3 and move 5 steps right. You reach 2."},
+    {q:"4 − 9 = ?", o:["5","−5","13","−13"], a:1, e:"Start at 4 and move 9 steps left. You reach −5."},
+    {q:"−6 − 2 = ?", o:["−4","4","−8","8"], a:2, e:"Start at −6 and move 2 steps left. You reach −8."},
+    {q:"What is the additive inverse of 7?", o:["7","−7","0","1/7"], a:1, e:"7 + (−7) = 0, so the additive inverse of 7 is −7."},
+    {q:"The temperature was −4°C in the morning and rose by 9°C. What is the new temperature?", o:["5°C","−13°C","13°C","−5°C"], a:0, e:"−4 + 9 = 5°C."}
+   ]},
+ { id:"u3", icon:"🧩", title:"Prime Factorization & Divisibility Tests", color:"#0ea5e9",
+   lesson:`<p>A <b>prime number</b> has exactly two factors: 1 and itself (2, 3, 5, 7, 11, 13, …).</p>
+   <p><b>Prime factorization</b> writes a number as a product of primes. Indices show repeats.</p>
+   <div class="ex">12 = 2 × 2 × 3 = 2² × 3</div>
+   <ul><li><b>GCF</b> (greatest common factor): the biggest number that divides both.</li>
+   <li><b>LCM</b> (lowest common multiple): the smallest number both divide into.</li></ul>
+   <p><b>Divisibility tests:</b> by 2 (last digit even) · by 3 (digit sum divisible by 3) · by 4 (last two digits divisible by 4) · by 5 (ends in 0 or 5) · by 6 (even and divisible by 3) · by 9 (digit sum divisible by 9) · by 10 (ends in 0)</p>`,
+   qs:[
+    {q:"Which of these is a prime number?", o:["21","29","39","51"], a:1, e:"21 = 3 × 7, 39 = 3 × 13 and 51 = 3 × 17. Only 29 has just two factors."},
+    {q:"Write 36 as a product of prime factors using indices.", o:["2² × 3²","2 × 18","3² × 4","2³ × 3"], a:0, e:"36 = 2 × 2 × 3 × 3 = 2² × 3²."},
+    {q:"What is the GCF of 24 and 36?", o:["6","12","8","72"], a:1, e:"24 = 2³ × 3 and 36 = 2² × 3². Common part: 2² × 3 = 12."},
+    {q:"What is the LCM of 6 and 8?", o:["14","24","48","12"], a:1, e:"Multiples of 6: 6, 12, 18, 24. Multiples of 8: 8, 16, 24. The lowest common one is 24."},
+    {q:"Which number is divisible by 9?", o:["4,725","4,735","4,751","4,714"], a:0, e:"4 + 7 + 2 + 5 = 18, and 18 is divisible by 9."}
+   ]},
+ { id:"u4", icon:"🍕", title:"Equivalent Fractions & Operations", color:"#f97316",
+   lesson:`<p><b>Equivalent fractions</b> have the same value. Multiply or divide the top and bottom by the same number.</p>
+   <div class="ex">2/3 = 4/6 = 6/9</div>
+   <ul><li>To compare fractions, change them to the same denominator.</li>
+   <li>To add or subtract fractions with different denominators, use the LCM as the new denominator.</li>
+   <li>For mixed numbers, add the whole numbers and the fractions separately.</li></ul>
+   <div class="ex">1/2 + 1/4 = 2/4 + 1/4 = <b>3/4</b></div>
+   <div class="ex">1 1/2 + 2 1/4 = 3 + 2/4 + 1/4 = <b>3 3/4</b></div>`,
+   qs:[
+    {q:"Which fraction is equivalent to 2/3?", o:["4/6","3/4","2/6","6/8"], a:0, e:"Multiply top and bottom of 2/3 by 2 to get 4/6."},
+    {q:"Which fraction is greater?", o:["5/8","3/4","They are equal","Cannot tell"], a:1, e:"3/4 = 6/8, and 6/8 is greater than 5/8."},
+    {q:"1/3 + 1/6 = ?", o:["2/9","1/2","2/6","1/9"], a:1, e:"1/3 = 2/6, so 2/6 + 1/6 = 3/6 = 1/2."},
+    {q:"3/4 − 1/6 = ?", o:["7/12","2/10","1/2","5/12"], a:0, e:"3/4 = 9/12 and 1/6 = 2/12. So 9/12 − 2/12 = 7/12."},
+    {q:"1 1/2 + 2 1/4 = ?", o:["3 3/4","3 1/4","4 1/4","3 1/2"], a:0, e:"Whole numbers: 1 + 2 = 3. Fractions: 1/2 + 1/4 = 3/4. Total 3 3/4."}
+   ]},
+ { id:"u5", icon:"🔟", title:"Multiplication & Division of Decimals", color:"#6d28d9",
+   lesson:`<p><b>Multiplying decimals:</b> multiply as whole numbers, then put the decimal point so the answer has as many decimal places as both numbers together.</p>
+   <div class="ex">0.6 × 0.3 → 6 × 3 = 18 → two decimal places → <b>0.18</b></div>
+   <p><b>Dividing decimals:</b> to divide by a decimal, multiply both numbers by 10 (or 100) to make the divisor whole.</p>
+   <div class="ex">4.8 ÷ 0.6 = 48 ÷ 6 = <b>8</b></div>
+   <p><b>Fractions and decimals:</b> 1/2 = 0.5 · 1/4 = 0.25 · 3/4 = 0.75 · 1/10 = 0.1</p>`,
+   qs:[
+    {q:"0.6 × 0.3 = ?", o:["1.8","0.18","0.018","18"], a:1, e:"6 × 3 = 18. There are two decimal places in total, so the answer is 0.18."},
+    {q:"2.4 × 15 = ?", o:["3.6","36","360","24"], a:1, e:"24 × 15 = 360. One decimal place gives 36.0 = 36."},
+    {q:"7.5 ÷ 5 = ?", o:["1.5","15","0.15","2.5"], a:0, e:"75 ÷ 5 = 15, so 7.5 ÷ 5 = 1.5."},
+    {q:"4.8 ÷ 0.6 = ?", o:["0.8","8","80","2.88"], a:1, e:"Multiply both by 10: 48 ÷ 6 = 8."},
+    {q:"Write 3/4 as a decimal.", o:["0.34","0.75","0.43","3.4"], a:1, e:"3 ÷ 4 = 0.75."}
+   ]},
+ { id:"u6", icon:"⚖️", title:"Application of Direct Proportions", color:"#7c3aed",
+   lesson:`<p>Two quantities are in <b>direct proportion</b> when one increases and the other increases in the same ratio.</p>
+   <ul><li>Find the value of one unit first (unitary method).</li>
+   <li><b>Constant of proportionality</b> k = y ÷ x</li>
+   <li>A <b>ratio</b> compares two quantities. Simplify it by dividing by the same number.</li></ul>
+   <div class="ex">3 pens cost 900 Frw → 1 pen = 300 Frw → 5 pens = <b>1,500 Frw</b></div>
+   <div class="ex">Share 40 in the ratio 3 : 5 → 8 parts → 1 part = 5 → shares are 15 and 25</div>`,
+   qs:[
+    {q:"5 exercise books cost 1,500 Frw. How much do 8 books cost?", o:["2,400 Frw","2,000 Frw","1,800 Frw","3,000 Frw"], a:0, e:"One book costs 1,500 ÷ 5 = 300 Frw. Eight books cost 8 × 300 = 2,400 Frw."},
+    {q:"A car uses 6 litres of fuel for 90 km. How many litres does it need for 240 km?", o:["14","16","18","20"], a:1, e:"90 ÷ 6 = 15 km per litre. Then 240 ÷ 15 = 16 litres."},
+    {q:"y is directly proportional to x. When x = 4, y = 20. What is the constant of proportionality?", o:["4","5","16","80"], a:1, e:"k = y ÷ x = 20 ÷ 4 = 5."},
+    {q:"Simplify the ratio 18 : 24.", o:["2 : 3","3 : 4","6 : 8","9 : 12"], a:1, e:"Divide both by 6: 18 : 24 = 3 : 4."},
+    {q:"Share 56,000 Frw in the ratio 3 : 5. How much is the larger share?", o:["21,000 Frw","35,000 Frw","28,000 Frw","40,000 Frw"], a:1, e:"3 + 5 = 8 parts. One part = 56,000 ÷ 8 = 7,000. Larger share = 5 × 7,000 = 35,000 Frw."}
+   ]},
+ { id:"u7", icon:"📏", title:"Length, Capacity & Mass", color:"#65a30d",
+   lesson:`<p><b>Length:</b> 1 km = 1,000 m · 1 m = 100 cm · 1 cm = 10 mm</p>
+   <p><b>Capacity:</b> 1 litre = 1,000 ml</p>
+   <p><b>Mass:</b> 1 kg = 1,000 g · 1 tonne = 1,000 kg</p>
+   <ul><li>Big unit to small unit: multiply.</li><li>Small unit to big unit: divide.</li></ul>
+   <div class="ex">2.5 km = 2.5 × 1,000 = <b>2,500 m</b></div>
+   <div class="ex">Cutting 6 m into pieces of 75 cm: 600 ÷ 75 = <b>8 pieces</b></div>`,
+   qs:[
+    {q:"Change 4.5 km to metres.", o:["450 m","4,500 m","45,000 m","4.5 m"], a:1, e:"4.5 × 1,000 = 4,500 m."},
+    {q:"Change 3.2 kg to grams.", o:["320 g","3,200 g","32 g","3,020 g"], a:1, e:"3.2 × 1,000 = 3,200 g."},
+    {q:"A jug holds 1.5 litres. How many jugs are needed to fill a 12-litre container?", o:["6","8","10","18"], a:1, e:"12 ÷ 1.5 = 8 jugs."},
+    {q:"A farmer sells 3 sacks of beans. Each sack has a mass of 45 kg. What is the total mass?", o:["125 kg","135 kg","145 kg","90 kg"], a:1, e:"3 × 45 = 135 kg."},
+    {q:"A cloth is 6 m long. It is cut into pieces of 75 cm each. How many pieces are there?", o:["6","8","10","12"], a:1, e:"6 m = 600 cm. Then 600 ÷ 75 = 8 pieces."}
+   ]},
+ { id:"u8", icon:"⏰", title:"Time Intervals", color:"#0d9488",
+   lesson:`<p><b>Units of time:</b> 60 seconds = 1 minute · 60 minutes = 1 hour · 24 hours = 1 day</p>
+   <p><b>Time interval:</b> the time from a start time to an end time. Use the 24-hour clock to avoid mistakes.</p>
+   <div class="ex">14:35 to 16:10 → 14:35 to 16:00 is 1 h 25 min, plus 10 min = <b>1 h 35 min</b></div>
+   <p><b>Adding time:</b> add hours and minutes separately. If minutes reach 60 or more, carry 1 hour.</p>
+   <div class="ex">1 h 45 min + 2 h 30 min = 3 h 75 min = <b>4 h 15 min</b></div>`,
+   qs:[
+    {q:"Change 2 hours 20 minutes to minutes.", o:["120","140","220","160"], a:1, e:"2 × 60 = 120. Then 120 + 20 = 140 minutes."},
+    {q:"How many hours are in 3 days?", o:["36","48","72","96"], a:2, e:"3 × 24 = 72 hours."},
+    {q:"A film starts at 14:35 and ends at 16:10. How long is the film?", o:["1 h 25 min","1 h 35 min","2 h 25 min","1 h 45 min"], a:1, e:"14:35 to 16:00 is 1 h 25 min. Add 10 min to get 1 h 35 min."},
+    {q:"1 h 45 min + 2 h 30 min = ?", o:["4 h 15 min","3 h 75 min","4 h 25 min","3 h 15 min"], a:0, e:"Hours: 1 + 2 = 3. Minutes: 45 + 30 = 75 = 1 h 15 min. Total 4 h 15 min."},
+    {q:"5 h 20 min − 2 h 45 min = ?", o:["2 h 35 min","3 h 35 min","2 h 25 min","3 h 25 min"], a:0, e:"Borrow 1 hour: 4 h 80 min − 2 h 45 min = 2 h 35 min."}
+   ]},
+ { id:"u9", icon:"💰", title:"Money & Financial Applications", color:"#ca8a04",
+   lesson:`<p>We use Rwandan francs (Frw). Key words:</p>
+   <ul><li><b>Cost price (CP):</b> what the seller paid</li>
+   <li><b>Selling price (SP):</b> what the seller receives</li>
+   <li><b>Profit</b> = SP − CP (when SP is bigger)</li>
+   <li><b>Loss</b> = CP − SP (when CP is bigger)</li>
+   <li><b>Profit %</b> = (profit ÷ CP) × 100</li></ul>
+   <div class="ex">CP 2,000 Frw, SP 2,500 Frw → profit 500 Frw → profit % = 500 ÷ 2,000 × 100 = <b>25%</b></div>
+   <p><b>Budget:</b> money in minus money spent shows what is left.</p>
+   <p><b>Currency conversion:</b> multiply by the exchange rate. Example rate: 1 US dollar = 1,400 Frw.</p>`,
+   qs:[
+    {q:"A trader buys a bag for 12,000 Frw and sells it for 15,000 Frw. What is the profit?", o:["2,000 Frw","3,000 Frw","4,000 Frw","27,000 Frw"], a:1, e:"15,000 − 12,000 = 3,000 Frw."},
+    {q:"A radio is bought for 9,500 Frw and sold for 8,000 Frw. What is the loss?", o:["500 Frw","1,500 Frw","17,500 Frw","2,500 Frw"], a:1, e:"9,500 − 8,000 = 1,500 Frw."},
+    {q:"Cost price is 2,000 Frw and the profit is 500 Frw. What is the profit percentage?", o:["10%","20%","25%","50%"], a:2, e:"500 ÷ 2,000 × 100 = 25%."},
+    {q:"If 1 US dollar = 1,400 Frw, how many Frw are 5 US dollars?", o:["700 Frw","5,600 Frw","7,000 Frw","1,405 Frw"], a:2, e:"5 × 1,400 = 7,000 Frw."},
+    {q:"Mary has 20,000 Frw. She spends 7,500 Frw on food and 4,200 Frw on transport. How much is left?", o:["8,300 Frw","9,300 Frw","7,300 Frw","12,500 Frw"], a:0, e:"7,500 + 4,200 = 11,700. Then 20,000 − 11,700 = 8,300 Frw."}
+   ]},
+ { id:"u10", icon:"🔁", title:"Sequences", color:"#e11d48",
+   lesson:`<p>A <b>sequence</b> is a list of numbers that follows a rule. It can include whole numbers, fractions and decimals.</p>
+   <ul><li><b>Constant difference:</b> add or subtract the same number each time.</li>
+   <li><b>Constant ratio:</b> multiply the same number each time.</li>
+   <li><b>Changing difference:</b> the difference itself grows by a pattern.</li></ul>
+   <div class="ex">7, 12, 17, 22 → add 5 → next is 27</div>
+   <div class="ex">2, 6, 18, 54 → multiply by 3 → next is 162</div>
+   <div class="ex">1, 2, 4, 7, 11 → differences are 1, 2, 3, 4 → next difference is 5 → next is 16</div>`,
+   qs:[
+    {q:"What comes next? 7, 12, 17, 22, ?", o:["26","27","28","32"], a:1, e:"The rule is add 5. So 22 + 5 = 27."},
+    {q:"What comes next? 2, 6, 18, 54, ?", o:["108","162","72","216"], a:1, e:"The rule is multiply by 3. So 54 × 3 = 162."},
+    {q:"What comes next? 0.5, 1.0, 1.5, 2.0, ?", o:["2.2","2.5","3.0","2.05"], a:1, e:"The rule is add 0.5. So 2.0 + 0.5 = 2.5."},
+    {q:"What comes next? 1/2, 1, 1 1/2, 2, ?", o:["2 1/4","2 1/2","3","2 3/4"], a:1, e:"The rule is add 1/2. So 2 + 1/2 = 2 1/2."},
+    {q:"What comes next? 1, 2, 4, 7, 11, ?", o:["15","16","17","18"], a:1, e:"The differences are 1, 2, 3, 4, so the next difference is 5. Then 11 + 5 = 16."}
+   ]},
+ { id:"u11", icon:"📐", title:"Angles & Intersecting Lines", color:"#ea580c",
+   lesson:`<p><b>Perpendicular lines</b> meet at a right angle (90°). <b>Parallel lines</b> never meet.</p>
+   <p>When two lines <b>intersect</b>:</p>
+   <ul><li>Vertically opposite angles are equal.</li>
+   <li>Adjacent angles on a straight line add up to 180°.</li></ul>
+   <p>When a <b>transversal</b> crosses two parallel lines:</p>
+   <ul><li>Corresponding angles are equal.</li><li>Alternate angles are equal.</li>
+   <li>Co-interior angles add up to 180°.</li></ul>
+   <p>The angles in a <b>triangle</b> add up to <b>180°</b>.</p>`,
+   qs:[
+    {q:"Two straight lines intersect. One angle is 70°. What is the vertically opposite angle?", o:["70°","110°","20°","140°"], a:0, e:"Vertically opposite angles are equal, so it is also 70°."},
+    {q:"In the same figure, what is the angle adjacent to the 70° angle?", o:["70°","110°","90°","290°"], a:1, e:"Adjacent angles on a straight line add up to 180°. So 180° − 70° = 110°."},
+    {q:"A transversal crosses two parallel lines. One corresponding angle is 65°. What is the other?", o:["25°","65°","115°","180°"], a:1, e:"Corresponding angles between parallel lines are equal."},
+    {q:"Co-interior angles between parallel lines add up to:", o:["90°","180°","270°","360°"], a:1, e:"Co-interior angles are supplementary: they add up to 180°."},
+    {q:"Two angles of a triangle are 45° and 85°. What is the third angle?", o:["40°","50°","130°","60°"], a:1, e:"45 + 85 = 130. Then 180 − 130 = 50°."}
+   ]},
+ { id:"u12", icon:"🗺️", title:"Scale Drawings", color:"#0891b2",
+   lesson:`<p>A <b>scale</b> shows how a drawing relates to the real object. A scale of <b>1 cm : 5 m</b> means 1 cm on the drawing stands for 5 m in real life.</p>
+   <ul><li>Actual length = drawing length × scale</li>
+   <li>Drawing length = actual length ÷ scale</li>
+   <li>Change to the same units before you divide.</li></ul>
+   <div class="ex">Scale 1 cm : 5 m, drawing 6 cm → actual = 6 × 5 = <b>30 m</b></div>
+   <div class="ex">Scale 1 cm : 2 m, actual 14 m → drawing = 14 ÷ 2 = <b>7 cm</b></div>`,
+   qs:[
+    {q:"The scale is 1 cm : 5 m. A line on the drawing is 6 cm. What is the actual length?", o:["11 m","30 m","1.2 m","300 m"], a:1, e:"6 × 5 = 30 m."},
+    {q:"The scale is 1 cm : 2 m. A wall is 14 m long. How long is it on the drawing?", o:["7 cm","28 cm","12 cm","16 cm"], a:0, e:"14 ÷ 2 = 7 cm."},
+    {q:"On a map, 1 cm : 10 km. Two towns are 4.5 cm apart on the map. What is the real distance?", o:["4.5 km","14.5 km","45 km","450 km"], a:2, e:"4.5 × 10 = 45 km."},
+    {q:"A classroom is 9 m by 6 m. The scale is 1 cm : 3 m. What are the drawing sizes?", o:["3 cm by 2 cm","27 cm by 18 cm","6 cm by 3 cm","9 cm by 6 cm"], a:0, e:"9 ÷ 3 = 3 cm and 6 ÷ 3 = 2 cm."},
+    {q:"The scale is 1 : 50. A table is 2 m long. How long is it on the drawing?", o:["4 cm","100 cm","40 cm","0.4 cm"], a:0, e:"2 m = 200 cm. Then 200 ÷ 50 = 4 cm."}
+   ]},
+ { id:"u13", icon:"⭕", title:"Circumference, Surface Area & Volume", color:"#db2777",
+   lesson:`<p><b>Circumference</b> is the distance around a circle.</p>
+   <div class="ex">C = π × d = 2 × π × r (use π ≈ 3.14 or 22/7)</div>
+   <p><b>Cube and cuboid:</b></p>
+   <ul><li>Cube surface area = 6 × side × side</li>
+   <li>Cuboid surface area = 2 × (l×w + l×h + w×h)</li>
+   <li>Volume of a cuboid = length × width × height</li>
+   <li>Missing dimension = volume ÷ the other two dimensions</li></ul>
+   <div class="ex">Cuboid 6 cm × 4 cm × 3 cm → volume = <b>72 cm³</b></div>`,
+   qs:[
+    {q:"A circle has a diameter of 10 cm. Use π = 3.14. What is its circumference?", o:["31.4 cm","62.8 cm","314 cm","15.7 cm"], a:0, e:"C = π × d = 3.14 × 10 = 31.4 cm."},
+    {q:"A circle has a radius of 7 cm. Use π = 22/7. What is its circumference?", o:["22 cm","44 cm","154 cm","14 cm"], a:1, e:"C = 2 × 22/7 × 7 = 44 cm."},
+    {q:"A cube has a side of 4 cm. What is its surface area?", o:["16 cm²","64 cm²","96 cm²","24 cm²"], a:2, e:"A cube has 6 faces. Each face is 4 × 4 = 16 cm². So 6 × 16 = 96 cm²."},
+    {q:"A cuboid is 6 cm long, 4 cm wide and 3 cm high. What is its volume?", o:["13 cm³","72 cm³","24 cm³","144 cm³"], a:1, e:"6 × 4 × 3 = 72 cm³."},
+    {q:"A cuboid has volume 120 cm³, length 8 cm and width 5 cm. What is its height?", o:["3 cm","4 cm","5 cm","15 cm"], a:0, e:"Height = 120 ÷ (8 × 5) = 120 ÷ 40 = 3 cm."}
+   ]},
+ { id:"u14", icon:"📊", title:"Data Handling", color:"#4f46e5",
+   lesson:`<p><b>Discrete data</b> is counted (number of pupils, goats, books).</p>
+   <p><b>Continuous data</b> is measured (height, mass, time, temperature).</p>
+   <ul><li>Use <b>tally marks</b> and tables to record data. Each bundle of 5 counts as 5.</li>
+   <li>A <b>bar chart</b> compares amounts in different groups.</li>
+   <li>A <b>line graph</b> shows how something changes over time.</li></ul>
+   <div class="ex">Books sold: Mon 12, Tue 18, Wed 15 → total = 12 + 18 + 15 = <b>45</b></div>`,
+   qs:[
+    {q:"Which one is discrete data?", o:["Number of books in a bag","Height of a pupil","Mass of a bag","Time to run 100 m"], a:0, e:"Books are counted, so the data is discrete."},
+    {q:"Which one is continuous data?", o:["Number of goats","Height of a tree","Number of desks","Number of pupils in a class"], a:1, e:"Height is measured, so the data is continuous."},
+    {q:"Which graph is best for showing how the temperature changes during a day?", o:["Bar chart","Line graph","Tally chart","Table of names"], a:1, e:"A line graph shows change over time."},
+    {q:"Books sold: Monday 12, Tuesday 18, Wednesday 15. How many books were sold in total?", o:["35","45","55","40"], a:1, e:"12 + 18 + 15 = 45."},
+    {q:"In the same data, how many more books were sold on Tuesday than on Monday?", o:["3","6","8","18"], a:1, e:"18 − 12 = 6."}
+   ]},
+ { id:"u15", icon:"🎲", title:"Likelihood of Events", color:"#be185d",
+   lesson:`<p>We describe how likely an event is with these words:</p>
+   <div class="ex">Impossible · Unlikely · Equally likely · Likely · Certain</div>
+   <ul><li><b>Certain:</b> it will definitely happen.</li>
+   <li><b>Impossible:</b> it can never happen.</li>
+   <li><b>Equally likely:</b> the outcomes have the same chance, like heads and tails on a fair coin.</li></ul>
+   <p>A fair die has 6 faces, numbered 1 to 6, so there are 6 possible outcomes when you roll it.</p>
+   <p>When we repeat an experiment many times, the results help us judge how likely an event is.</p>`,
+   qs:[
+    {q:"You roll a normal die with faces 1 to 6. Getting a 7 is:", o:["Certain","Likely","Impossible","Equally likely"], a:2, e:"There is no 7 on the die, so it can never happen."},
+    {q:"The sun will rise tomorrow. This event is:", o:["Impossible","Certain","Unlikely","Equally likely"], a:1, e:"It will definitely happen, so it is certain."},
+    {q:"You toss a fair coin. Getting heads and getting tails are:", o:["Heads is more likely","Tails is more likely","Equally likely","Impossible"], a:2, e:"Each side has the same chance."},
+    {q:"A bag has 9 red balls and 1 blue ball. Picking a red ball without looking is:", o:["Impossible","Unlikely","Likely","Certain"], a:2, e:"Most balls are red, so it is likely. It is not certain because there is a blue ball."},
+    {q:"How many possible outcomes are there when you roll a fair die once?", o:["4","6","12","36"], a:1, e:"The die has faces 1, 2, 3, 4, 5 and 6, so there are 6 outcomes."}
+   ]}
+];
+
+const BADGES = [
+ {id:"first", icon:"🌱", name:"First Steps", desc:"Answer your first question", test:()=>S.answered>=1},
+ {id:"ten",   icon:"🔟", name:"Ten Correct", desc:"Get 10 answers right", test:()=>S.correct>=10},
+ {id:"fifty", icon:"🎯", name:"Sharp Mind", desc:"Get 50 answers right", test:()=>S.correct>=50},
+ {id:"perfect",icon:"⭐", name:"Perfect Unit", desc:"Score 100% in a unit", test:()=>Object.values(S.best).some(v=>v>=100)},
+ {id:"all",   icon:"🏆", name:"Unit Champion", desc:"Score 80%+ in every unit", test:()=>UNITS.every(u=>(S.best[u.id]||0)>=80)},
+ {id:"speed", icon:"⚡", name:"Speedster", desc:"10+ correct in Play & Learn", test:()=>S.gameBest>=10},
+ {id:"exam",  icon:"📝", name:"Exam Ready", desc:"Finish an exam", test:()=>S.exams>=1},
+ {id:"pts",   icon:"💎", name:"Point Collector", desc:"Earn 500 points", test:()=>S.points>=500}
+];
+
+/* ============ APP CODE ============ */
+const KEY = "p5math_studio_v1";
+let S = {name:"", points:0, answered:0, correct:0, best:{}, badges:[], exams:0, gameBest:0};
+try { const r = localStorage.getItem(KEY); if (r) S = Object.assign(S, JSON.parse(r)); } catch(e) {}
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) {} }
+
+const app = document.getElementById("app");
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const rnd = (a,b) => Math.floor(Math.random()*(b-a+1))+a;
+function shuffle(arr){ const a = arr.slice(); for (let i=a.length-1;i>0;i--){ const j=rnd(0,i); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+const allQs = () => UNITS.reduce((acc,u)=>acc.concat(u.qs), []);
+
+document.getElementById("siteName").textContent = CONFIG.siteName;
+document.getElementById("siteTitle").textContent = CONFIG.title;
+document.getElementById("siteTag").textContent = CONFIG.tagline;
+
+let timerId = null, Q = null, G = null;
+
+function setNav(v){
+  document.querySelectorAll("#nav button").forEach(b => b.classList.toggle("on", b.dataset.v === v));
+}
+document.getElementById("nav").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (b) go(b.dataset.v);
+});
+
+function go(v, arg){
+  clearInterval(timerId); Q = null; G = null;
+  const navView = ["home","practice","play","exam","progress"].includes(v) ? v : (v==="unit" ? "home" : v);
+  setNav(navView);
+  ({home, unit, practice, play, exam, progress}[v])(arg);
+  window.scrollTo(0,0);
+}
+
+function checkBadges(){
+  const fresh = [];
+  BADGES.forEach(b => { if (!S.badges.includes(b.id) && b.test()) { S.badges.push(b.id); fresh.push(b); } });
+  save();
+  return fresh;
+}
+function accuracy(){ return S.answered ? Math.round(S.correct / S.answered * 100) : 0; }
+
+/* ---------- HOME ---------- */
+function home(){
+  const greet = S.name ? `Hello, ${esc(S.name)}! 👋` : "Welcome! 👋";
+  let h = `<div class="card"><h2 style="margin-top:0">${greet}</h2>
+    <p class="muted" style="margin:0 0 4px">Pick a unit to start learning, or jump into practice.</p>
+    ${S.name ? "" : `<input class="name" id="nm" placeholder="Type your name" maxlength="30"><button class="btn block" onclick="saveName()">Save name</button>`}
+  </div>
+  <div class="stats">
+    <div class="stat"><b>${S.points}</b><span>Points</span></div>
+    <div class="stat"><b>${S.correct}</b><span>Correct</span></div>
+    <div class="stat"><b>${accuracy()}%</b><span>Accuracy</span></div>
+  </div>
+  <h2>Learning Units</h2><div class="grid">`;
+  UNITS.forEach((u,i) => {
+    const best = S.best[u.id];
+    h += `<button class="unit" style="background:${u.color}" onclick="go('unit','${u.id}')">
+      <span class="ic">${u.icon}</span><span><small>Unit ${i+1}</small><b>${esc(u.title)}</b><small>${best!=null ? "Best: "+best+"%" : "Not started"}</small></span></button>`;
+  });
+  h += `</div>
+  <div class="card" style="margin-top:14px"><h3>Quick start</h3>
+    <div class="row">
+      <button class="btn green" onclick="go('practice')">✏️ Practice</button>
+      <button class="btn orange" onclick="go('play')">🎮 Play &amp; Learn</button>
+      <button class="btn alt" onclick="go('exam')">📝 Exam Mode</button>
+    </div></div>
+  <div class="card promo"><div class="kick">Your learning, without limits</div>
+    <h2>Need the <span>OFFLINE</span> Version?</h2>
+    <p class="muted">Keep learning even when the internet is unavailable! Contact us to get the offline version of this Learning Studio.</p>
+    <a class="btn green" style="text-decoration:none" target="_blank" rel="noopener" href="${esc(CONFIG.contactUrl)}">💬 Contact us on WhatsApp</a><p class="muted" style="margin:10px 0 0">WhatsApp: <b>${esc(CONFIG.whatsappNumber)}</b></p></div>`;
+  app.innerHTML = h;
+}
+function saveName(){
+  const v = document.getElementById("nm").value.trim();
+  if (v) { S.name = v.slice(0,30); save(); home(); }
+}
+
+/* ---------- UNIT LESSON ---------- */
+function unit(id){
+  const u = UNITS.find(x => x.id === id);
+  app.innerHTML = `<button class="back" onclick="go('home')">← All units</button>
+   <div class="card lesson"><div style="font-size:34px">${u.icon}</div><h2 style="margin-top:2px">${esc(u.title)}</h2>${u.lesson}</div>
+   <button class="btn block green" onclick="startUnitQuiz('${u.id}')">Start the quiz (${u.qs.length} questions)</button>`;
+}
+function startUnitQuiz(id){
+  const u = UNITS.find(x => x.id === id);
+  startQuiz({title:u.title, questions:u.qs, mode:"unit", unitId:id, back:"unit", backArg:id});
+}
+
+/* ---------- PRACTICE ---------- */
+function practice(){
+  let h = `<h2>Practice Quiz</h2>
+  <div class="card"><h3>Mixed practice</h3><p class="muted">10 random questions from all units.</p>
+    <button class="btn block green" onclick="startMixed()">Start mixed practice</button></div>
+  <div class="card"><h3>Practice by unit</h3>`;
+  UNITS.forEach(u => { h += `<button class="btn alt block" onclick="startUnitQuiz('${u.id}')">${u.icon} ${esc(u.title)}</button>`; });
+  h += `</div>`;
+  app.innerHTML = h;
+}
+function startMixed(){
+  startQuiz({title:"Mixed Practice", questions:shuffle(allQs()).slice(0,10), mode:"practice", back:"practice"});
+}
+
+/* ---------- EXAM ---------- */
+function exam(){
+  app.innerHTML = `<h2>Exam Mode</h2>
+  <div class="card"><p>15 questions from all units · 15 minutes · no hints until the end.</p>
+  <p class="muted">Best for practising before a real test. Answers and explanations are shown when you finish.</p>
+  <button class="btn block orange" onclick="startExam()">Start exam</button></div>`;
+}
+function startExam(){
+  startQuiz({title:"Exam", questions:shuffle(allQs()).slice(0,15), mode:"exam", time:900, back:"exam"});
+}
+
+/* ---------- QUIZ ENGINE ---------- */
+function startQuiz(opts){
+  clearInterval(timerId);
+  const qs = shuffle(opts.questions).map(x => {
+    const idx = shuffle(x.o.map((_,i)=>i));
+    return {q:x.q, o:idx.map(i=>x.o[i]), a:idx.indexOf(x.a), e:x.e||""};
+  });
+  Q = Object.assign({}, opts, {qs, i:0, score:0, sel:null, log:[], left:opts.time||0});
+  if (Q.time) timerId = setInterval(tick, 1000);
+  renderQuiz();
+}
+function fmt(s){ return Math.floor(s/60) + ":" + String(s%60).padStart(2,"0"); }
+function tick(){
+  if (!Q) return clearInterval(timerId);
+  Q.left--;
+  const t = document.getElementById("tm"); if (t) t.textContent = "⏱ " + fmt(Math.max(Q.left,0));
+  if (Q.left <= 0) finishQuiz();
+}
+function renderQuiz(){
+  const q = Q.qs[Q.i], n = Q.qs.length;
+  let h = `<div class="card"><div class="qtop"><span>${esc(Q.title)} · Question ${Q.i+1} of ${n}</span>${Q.time?`<span class="timer" id="tm">⏱ ${fmt(Q.left)}</span>`:""}</div>
+    <div class="bar"><i style="width:${(Q.i)/n*100}%"></i></div>
+    <div class="q">${esc(q.q)}</div>`;
+  q.o.forEach((t,i) => { h += `<button class="opt" id="o${i}" onclick="pick(${i})">${esc(t)}</button>`; });
+  h += `<div id="fb"></div><div id="nx"></div></div>`;
+  app.innerHTML = h;
+}
+function pick(i){
+  if (!Q || Q.sel !== null) return;
+  Q.sel = i;
+  const q = Q.qs[Q.i], ok = i === q.a;
+  Q.log.push({q:q.q, chosen:q.o[i], right:q.o[q.a], ok, e:q.e});
+  S.answered++;
+  if (ok) { Q.score++; S.correct++; S.points += 10; }
+  save();
+  if (Q.mode === "exam") { document.getElementById("o"+i).classList.add("picked"); setTimeout(nextQ, 250); return; }
+  document.getElementById("o"+q.a).classList.add("ok");
+  if (!ok) document.getElementById("o"+i).classList.add("bad");
+  document.getElementById("fb").innerHTML = `<div class="fb ${ok?"ok":"bad"}"><b>${ok?"Correct! +10 points 🎉":"Not quite."}</b> ${esc(q.e)}</div>`;
+  const last = Q.i === Q.qs.length - 1;
+  document.getElementById("nx").innerHTML = `<button class="btn block" onclick="nextQ()">${last?"See my score":"Next question →"}</button>`;
+}
+function nextQ(){
+  if (!Q) return;
+  if (Q.i >= Q.qs.length - 1) return finishQuiz();
+  Q.i++; Q.sel = null; renderQuiz();
+}
+function finishQuiz(){
+  clearInterval(timerId);
+  if (!Q) return;
+  const n = Q.qs.length, pct = Math.round(Q.score / n * 100), isExam = Q.mode === "exam";
+  if (Q.mode === "unit") S.best[Q.unitId] = Math.max(S.best[Q.unitId] || 0, pct);
+  if (isExam) S.exams++;
+  const bonus = pct === 100 ? 20 : 0; S.points += bonus;
+  const fresh = checkBadges();
+  const msg = pct===100 ? "Perfect score! Amazing! 🌟" : pct>=80 ? "Excellent work! 👏" : pct>=50 ? "Good effort. Keep practising! 💪" : "Keep going, you will improve! 📚";
+  let h = `<div class="card center"><div class="big">${pct>=80?"🏆":pct>=50?"👍":"📘"}</div>
+    <h2 style="margin:0">${Q.score} / ${n} · ${pct}%</h2><p class="muted">${msg}${bonus?" (+20 bonus points)":""}</p></div>`;
+  if (fresh.length) h += `<div class="card"><h3>New badge${fresh.length>1?"s":""} unlocked!</h3>${fresh.map(b=>`<div>${b.icon} <b>${b.name}</b> — ${b.desc}</div>`).join("")}</div>`;
+  if (isExam) {
+    h += `<div class="card"><h3>Review</h3>` + Q.log.map((l,i) =>
+      `<div class="rev">${i+1}. ${esc(l.q)}<br>${l.ok?"✅":"❌"} Your answer: <b>${esc(l.chosen)}</b>${l.ok?"":` · Correct: <b>${esc(l.right)}</b>`}<br><span class="muted">${esc(l.e)}</span></div>`).join("")
+      + (Q.log.length < n ? `<div class="rev muted">${n-Q.log.length} question(s) not answered before time ran out.</div>` : "") + `</div>`;
+  }
+  const again = Q.mode==="unit" ? `startUnitQuiz('${Q.unitId}')` : Q.mode==="exam" ? "startExam()" : "startMixed()";
+  h += `<button class="btn block green" onclick="${again}">Try again</button>
+        <button class="btn block alt" onclick="go('home')">Back to home</button>`;
+  Q = null;
+  app.innerHTML = h;
+}
+
+/* ---------- PLAY & LEARN (speed game) ---------- */
+function play(){
+  app.innerHTML = `<h2>Play &amp; Learn</h2>
+  <div class="card center"><div class="big">⚡</div><h3>Speed Math</h3>
+  <p class="muted">Answer as many questions as you can in 60 seconds.<br>Each correct answer gives 2 points.</p>
+  <p>Your best: <b>${S.gameBest}</b></p>
+  <button class="btn block orange" onclick="startGame()">Start game</button></div>`;
+}
+function genQ(){
+  const t = rnd(0,3); let a,b,ans,txt;
+  if (t===0){ a=rnd(10,99); b=rnd(10,99); ans=a+b; txt=`${a} + ${b}`; }
+  else if (t===1){ a=rnd(30,99); b=rnd(10,a-1); ans=a-b; txt=`${a} − ${b}`; }
+  else if (t===2){ a=rnd(2,12); b=rnd(2,12); ans=a*b; txt=`${a} × ${b}`; }
+  else { b=rnd(2,12); ans=rnd(2,12); a=b*ans; txt=`${a} ÷ ${b}`; }
+  const set = new Set([ans]);
+  while (set.size < 4) { const w = ans + rnd(-10,10); if (w >= 0) set.add(w); }
+  return {txt, ans, opts:shuffle([...set])};
+}
+function startGame(){
+  clearInterval(timerId);
+  G = {left:60, score:0, cur:genQ(), lock:false};
+  timerId = setInterval(() => {
+    if (!G) return clearInterval(timerId);
+    G.left--;
+    const t = document.getElementById("gt"); if (t) t.textContent = "⏱ " + G.left + "s";
+    if (G.left <= 0) endGame();
+  }, 1000);
+  renderGame();
+}
+function renderGame(){
+  app.innerHTML = `<div class="card"><div class="qtop"><span>Score: <b id="gs">${G.score}</b></span><span class="timer" id="gt">⏱ ${G.left}s</span></div>
+    <div class="big-game">${G.cur.txt} = ?</div>
+    <div class="opts2">${G.cur.opts.map(o=>`<button class="opt" onclick="gPick(${o})">${o}</button>`).join("")}</div></div>`;
+}
+function gPick(v){
+  if (!G || G.lock) return;
+  if (v === G.cur.ans) { G.score++; S.points += 2; S.correct++; }
+  S.answered++;
+  G.cur = genQ(); renderGame();
+}
+function endGame(){
+  clearInterval(timerId);
+  const sc = G.score; G = null;
+  const newBest = sc > S.gameBest; if (newBest) S.gameBest = sc;
+  save();
+  const fresh = checkBadges();
+  app.innerHTML = `<div class="card center"><div class="big">⚡</div><h2 style="margin:0">You got ${sc} correct!</h2>
+    <p class="muted">${newBest?"New personal best! 🎉":"Your best is "+S.gameBest+"."} You earned ${sc*2} points.</p></div>
+    ${fresh.length?`<div class="card"><h3>New badge unlocked!</h3>${fresh.map(b=>`<div>${b.icon} <b>${b.name}</b> — ${b.desc}</div>`).join("")}</div>`:""}
+    <button class="btn block orange" onclick="startGame()">Play again</button>
+    <button class="btn block alt" onclick="go('home')">Back to home</button>`;
+}
+
+/* ---------- PROGRESS ---------- */
+function progress(){
+  let h = `<h2>My Progress</h2>
+  <div class="stats">
+    <div class="stat"><b>${S.points}</b><span>Points</span></div>
+    <div class="stat"><b>${S.answered}</b><span>Answered</span></div>
+    <div class="stat"><b>${accuracy()}%</b><span>Accuracy</span></div>
+  </div>
+  <div class="card"><h3>Units</h3>`;
+  UNITS.forEach(u => {
+    const b = S.best[u.id] || 0;
+    h += `<div style="margin:10px 0"><div class="qtop"><span>${u.icon} ${esc(u.title)}</span><b>${b}%</b></div><div class="bar"><i style="width:${b}%"></i></div></div>`;
+  });
+  h += `</div><div class="card"><h3>Badges (${S.badges.length}/${BADGES.length})</h3><div class="badges">`;
+  BADGES.forEach(b => {
+    const on = S.badges.includes(b.id);
+    h += `<div class="badge ${on?"":"off"}"><div class="e">${b.icon}</div><b>${b.name}</b><small>${b.desc}</small></div>`;
+  });
+  h += `</div></div><button class="btn alt block" onclick="resetAll()">Reset my progress</button>`;
+  app.innerHTML = h;
+}
+function resetAll(){
+  if (confirm("Reset all your progress?")) {
+    S = {name:S.name, points:0, answered:0, correct:0, best:{}, badges:[], exams:0, gameBest:0};
+    save(); progress();
+  }
+}
+
+go("home");
+</script>
+</body>
+</html>

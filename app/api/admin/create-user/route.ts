@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { createClient as createSupabaseAdminClient } from "@supabase/supabase-js";
+import { createClient as createServerSupabaseClient } from "@/utils/supabase/server";
 
 type CreateUserRequest = {
   full_name: string;
@@ -13,6 +14,26 @@ type CreateUserRequest = {
 
 export async function POST(request: Request) {
   try {
+    // Verify the signed-in administrator.
+    const supabase = await createServerSupabaseClient();
+    const { data: { user }, error: sessionError } = await supabase.auth.getUser();
+
+    if (sessionError || !user) {
+      return NextResponse.json(
+        { error: "Please sign in as administrator." },
+        { status: 401 }
+      );
+    }
+
+    const adminEmail = process.env.ADMIN_EMAIL?.trim().toLowerCase();
+
+    if (!adminEmail || user.email?.trim().toLowerCase() !== adminEmail) {
+      return NextResponse.json(
+        { error: "Administrator access denied." },
+        { status: 403 }
+      );
+    }
+
     const body: CreateUserRequest = await request.json();
 
     const {
@@ -76,7 +97,7 @@ export async function POST(request: Request) {
     }
 
     // Create Supabase admin client
-    const supabaseAdmin = createClient(
+    const supabaseAdmin = createSupabaseAdminClient(
       supabaseUrl,
       supabaseSecretKey,
       {

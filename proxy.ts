@@ -62,7 +62,7 @@ export async function proxy(request: NextRequest) {
     const { data: student } = await supabase
       .from("students")
       .select("id")
-      .eq("id", user.id)
+      .eq("email", user.email)
       .maybeSingle();
 
     if (!student) {
@@ -108,12 +108,13 @@ export async function proxy(request: NextRequest) {
       );
     }
 
-    /*
-     * Admin authentication is handled by the existing
-     * admin login/session system.
-     *
-     * We only require an authenticated Supabase user here.
-     */
+    const adminEmail = process.env.ADMIN_EMAIL?.trim().toLowerCase();
+
+    if (!adminEmail || user.email?.toLowerCase() !== adminEmail) {
+      return NextResponse.redirect(
+        new URL("/", request.url)
+      );
+    }
   }
 
   return response;

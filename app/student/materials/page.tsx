@@ -17,6 +17,23 @@ type Material = {
   created_at: string;
 };
 
+const rebFolderUrls: Record<string, string> = {
+  P1: "https://elearning.reb.rw/mod/folder/view.php?id=14416",
+  P2: "https://elearning.reb.rw/mod/folder/view.php?id=14417",
+  P3: "https://elearning.reb.rw/mod/folder/view.php?id=14420",
+  P4: "https://elearning.reb.rw/mod/folder/view.php?id=14421",
+  P5: "https://elearning.reb.rw/mod/folder/view.php?id=14422",
+  P6: "https://elearning.reb.rw/mod/folder/view.php?id=14423",
+};
+
+function normalizeClass(value: string | null | undefined) {
+  return (value || "")
+    .trim()
+    .replace(/^PRIMARY\s*/i, "P")
+    .replace(/\s+/g, "")
+    .toUpperCase();
+}
+
 export default function StudentMaterialsPage() {
   const supabase = createClient();
 
@@ -33,18 +50,15 @@ export default function StudentMaterialsPage() {
     setMessage("");
 
     try {
-      // Identify the signed-in student
       const { data: authData, error: authError } =
         await supabase.auth.getUser();
 
       if (authError || !authData.user?.email) {
         setMessage("Please sign in to view your learning materials.");
         setMaterials([]);
-        setLoading(false);
         return;
       }
 
-      // Find the student's assigned class
       const { data: student, error: studentError } = await supabase
         .from("students")
         .select("full_name, class_name")
@@ -57,13 +71,11 @@ export default function StudentMaterialsPage() {
           "Your student account or assigned class could not be found. Please contact the administrator."
         );
         setMaterials([]);
-        setLoading(false);
         return;
       }
 
       setStudentClass(student.class_name);
 
-      // Load materials for this class and materials shared with all classes
       const { data, error } = await supabase
         .from("learning_materials")
         .select(
@@ -73,16 +85,23 @@ export default function StudentMaterialsPage() {
 
       if (error) {
         console.error("Error loading learning materials:", error);
-        setMessage(`Unable to load materials: ${error.message}`);
+        setMessage("Unable to load materials: " + error.message);
         setMaterials([]);
-      } else {
-        const studentMaterials = (data || []).filter(
-          (material) =>
-            material.class_name === student.class_name
-        );
-
-        setMaterials(studentMaterials);
+        return;
       }
+
+      const normalizedClass = normalizeClass(student.class_name);
+
+      const studentMaterials = (data || []).filter((material) => {
+        // Show materials assigned to this class.
+        // Also show shared materials with no assigned class.
+        return (
+          !material.class_name?.trim() ||
+          normalizeClass(material.class_name) === normalizedClass
+        );
+      });
+
+      setMaterials(studentMaterials as Material[]);
     } catch (error) {
       console.error("Unexpected error:", error);
       setMessage("Something went wrong while loading learning materials.");
@@ -91,9 +110,13 @@ export default function StudentMaterialsPage() {
       setLoading(false);
     }
   }
+
   useEffect(() => {
     loadMaterials();
   }, []);
+
+  const normalizedStudentClass = normalizeClass(studentClass);
+  const rebFolderUrl = rebFolderUrls[normalizedStudentClass];
 
   const classes = Array.from(
     new Set(
@@ -123,7 +146,8 @@ export default function StudentMaterialsPage() {
       material.file_name?.toLowerCase().includes(searchText);
 
     const matchesClass =
-      classFilter === "All" || material.class_name === classFilter;
+      classFilter === "All" ||
+      normalizeClass(material.class_name) === normalizeClass(classFilter);
 
     const matchesSubject =
       subjectFilter === "All" || material.subject === subjectFilter;
@@ -134,15 +158,15 @@ export default function StudentMaterialsPage() {
   function getIcon(type: string) {
     switch (type.toLowerCase()) {
       case "book":
-        return "ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â°ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¸ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¡";
+        return "📚";
       case "pdf":
-        return "ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â°ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¸ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¾";
+        return "📄";
       case "photo":
-        return "ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â°ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¸ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¼ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¯ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¸ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â";
+        return "🖼️";
       case "video":
-        return "ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â°ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¸ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â½ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¥";
+        return "🎬";
       default:
-        return "ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â°ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¸ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â½";
+        return "📁";
     }
   }
 
@@ -160,16 +184,6 @@ export default function StudentMaterialsPage() {
     }
   }
 
-  const rebFolderUrls: Record<string, string> = {
-    P1: "https://elearning.reb.rw/mod/folder/view.php?id=14416",
-    P2: "https://elearning.reb.rw/mod/folder/view.php?id=14417",
-    P3: "https://elearning.reb.rw/mod/folder/view.php?id=14420",
-    P4: "https://elearning.reb.rw/mod/folder/view.php?id=14421",
-    P5: "https://elearning.reb.rw/mod/folder/view.php?id=14422",
-    P6: "https://elearning.reb.rw/mod/folder/view.php?id=14423",
-  };
-
-  const rebFolderUrl = rebFolderUrls[studentClass];
   return (
     <main
       style={{
@@ -191,23 +205,10 @@ export default function StudentMaterialsPage() {
         }}
       >
         <div>
-          <h1
-            style={{
-              margin: 0,
-              color: "#123c69",
-              fontSize: "32px",
-            }}
-          >
-            ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â°ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¸ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¡ Learning Materials
+          <h1 style={{ margin: 0, color: "#123c69", fontSize: "32px" }}>
+            📚 Learning Materials
           </h1>
-
-          <p
-            style={{
-              color: "#666",
-              marginTop: "8px",
-              fontSize: "16px",
-            }}
-          >
+          <p style={{ color: "#666", marginTop: "8px", fontSize: "16px" }}>
             Books, PDFs, photos and videos for your learning.
           </p>
         </div>
@@ -223,16 +224,66 @@ export default function StudentMaterialsPage() {
             fontWeight: "bold",
           }}
         >
-          ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â Student Dashboard
+          ← Student Dashboard
         </Link>
       </header>
 
-      <section
-        style={{
-          maxWidth: "1200px",
-          margin: "0 auto",
-        }}
-      >
+      <section style={{ maxWidth: "1200px", margin: "0 auto" }}>
+        {rebFolderUrl && (
+          <section
+            style={{
+              background: "white",
+              padding: "24px",
+              borderRadius: "12px",
+              marginBottom: "25px",
+              boxShadow: "0 3px 15px rgba(0,0,0,0.06)",
+              borderLeft: "5px solid #16834a",
+            }}
+          >
+            <h2 style={{ color: "#123c69", marginTop: 0 }}>
+              Official REB Books - {studentClass}
+            </h2>
+
+            <p style={{ color: "#666", lineHeight: 1.6 }}>
+              Access official Rwanda Education Board learning resources
+              for your class, including available pupil books and
+              teachers' guides.
+            </p>
+
+            <a
+              href={rebFolderUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: "inline-block",
+                background: "#16834a",
+                color: "white",
+                padding: "12px 20px",
+                borderRadius: "7px",
+                textDecoration: "none",
+                fontWeight: "bold",
+              }}
+            >
+              Open REB {studentClass} Books
+            </a>
+          </section>
+        )}
+
+        {message && (
+          <div
+            style={{
+              background: "#fff4e5",
+              border: "1px solid #f0c36d",
+              color: "#7a4b00",
+              padding: "14px",
+              borderRadius: "8px",
+              marginBottom: "20px",
+            }}
+          >
+            {message}
+          </div>
+        )}
+
         <div
           style={{
             background: "white",
@@ -254,7 +305,7 @@ export default function StudentMaterialsPage() {
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â°ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¸ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â½ Search materials..."
+              placeholder="Search materials..."
               style={{
                 width: "100%",
                 padding: "12px 14px",
@@ -278,7 +329,6 @@ export default function StudentMaterialsPage() {
               }}
             >
               <option value="All">All Classes</option>
-
               {classes.map((className) => (
                 <option key={className} value={className}>
                   {className}
@@ -299,7 +349,6 @@ export default function StudentMaterialsPage() {
               }}
             >
               <option value="All">All Subjects</option>
-
               {subjects.map((subject) => (
                 <option key={subject} value={subject}>
                   {subject}
@@ -308,57 +357,6 @@ export default function StudentMaterialsPage() {
             </select>
           </div>
         </div>
-
-        {rebFolderUrl && (
-          <section
-            style={{
-              background: "white",
-              padding: "24px",
-              borderRadius: "12px",
-              marginBottom: "25px",
-              boxShadow: "0 3px 15px rgba(0,0,0,0.06)",
-              borderLeft: "5px solid #16834a",
-            }}
-          >
-            <h2 style={{ color: "#123c69", marginTop: 0 }}>
-              Official REB Books - {studentClass}
-            </h2>
-            <p style={{ color: "#666", lineHeight: 1.6 }}>
-              Open the official Rwanda Education Board learning resources
-              for your class, including available pupil books and teachers' guides.
-            </p>
-            <a
-              href={rebFolderUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: "inline-block",
-                background: "#16834a",
-                color: "white",
-                padding: "12px 20px",
-                borderRadius: "7px",
-                textDecoration: "none",
-                fontWeight: "bold",
-              }}
-            >
-              Open REB {studentClass} Books
-            </a>
-          </section>
-        )}
-        {message && (
-          <div
-            style={{
-              background: "#fff4e5",
-              border: "1px solid #f0c36d",
-              color: "#7a4b00",
-              padding: "14px",
-              borderRadius: "8px",
-              marginBottom: "20px",
-            }}
-          >
-            {message}
-          </div>
-        )}
 
         {loading ? (
           <div
@@ -383,7 +381,7 @@ export default function StudentMaterialsPage() {
               boxShadow: "0 3px 15px rgba(0,0,0,0.05)",
             }}
           >
-            <div style={{ fontSize: "55px" }}>ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â°ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¸ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¡</div>
+            <div style={{ fontSize: "55px" }}>📚</div>
 
             <h2 style={{ color: "#123c69" }}>
               No learning materials found
@@ -391,7 +389,7 @@ export default function StudentMaterialsPage() {
 
             <p style={{ color: "#777" }}>
               {materials.length === 0
-                ? "Learning materials will appear here when the school uploads them."
+                ? "Learning materials will appear here when they are available for your class."
                 : "Try changing your search or filters."}
             </p>
           </div>
@@ -407,21 +405,11 @@ export default function StudentMaterialsPage() {
                 flexWrap: "wrap",
               }}
             >
-              <h2
-                style={{
-                  margin: 0,
-                  color: "#123c69",
-                }}
-              >
+              <h2 style={{ margin: 0, color: "#123c69" }}>
                 Available Materials
               </h2>
 
-              <span
-                style={{
-                  color: "#666",
-                  fontSize: "14px",
-                }}
-              >
+              <span style={{ color: "#666", fontSize: "14px" }}>
                 {filteredMaterials.length} material
                 {filteredMaterials.length === 1 ? "" : "s"}
               </span>
@@ -448,12 +436,7 @@ export default function StudentMaterialsPage() {
                     flexDirection: "column",
                   }}
                 >
-                  <div
-                    style={{
-                      fontSize: "45px",
-                      marginBottom: "10px",
-                    }}
-                  >
+                  <div style={{ fontSize: "45px", marginBottom: "10px" }}>
                     {getIcon(material.material_type)}
                   </div>
 
@@ -504,20 +487,26 @@ export default function StudentMaterialsPage() {
                     }}
                   >
                     {material.subject && (
-                      <div>ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â°ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¸ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã¢â‚¬Â¹Ãƒâ€¦Ã¢â‚¬Å“ <strong>Subject:</strong> {material.subject}</div>
+                      <div>
+                        📖 <strong>Subject:</strong> {material.subject}
+                      </div>
                     )}
 
                     {material.class_name && (
-                      <div>ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â°ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¸ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â½ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“ <strong>Class:</strong> {material.class_name}</div>
+                      <div>
+                        🎓 <strong>Class:</strong> {material.class_name}
+                      </div>
+                    )}
+
+                    {!material.class_name && (
+                      <div>
+                        🌍 <strong>Availability:</strong> All classes
+                      </div>
                     )}
 
                     {material.file_name && (
-                      <div
-                        style={{
-                          overflowWrap: "anywhere",
-                        }}
-                      >
-                        ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â°ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¸ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â½ <strong>File:</strong> {material.file_name}
+                      <div style={{ overflowWrap: "anywhere" }}>
+                        📁 <strong>File:</strong> {material.file_name}
                       </div>
                     )}
                   </div>
@@ -546,7 +535,7 @@ export default function StudentMaterialsPage() {
                         fontWeight: "bold",
                       }}
                     >
-                      ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â°ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¸ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ {getActionText(material.material_type)}
+                      {getActionText(material.material_type)}
                     </a>
 
                     <a
@@ -564,7 +553,7 @@ export default function StudentMaterialsPage() {
                         fontWeight: "bold",
                       }}
                     >
-                      ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¯ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¸ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â Download
+                      ⬇ Download
                     </a>
                   </div>
                 </article>
@@ -584,9 +573,8 @@ export default function StudentMaterialsPage() {
           paddingBottom: "15px",
         }}
       >
-        ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â© 2026 EP APPEC Remera Rukoma ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· District Kamonyi ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· Sector Rukoma
+        © 2026 EP APPEC Remera Rukoma · District Kamonyi · Sector Rukoma
       </footer>
     </main>
   );
 }
-

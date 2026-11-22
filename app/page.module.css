@@ -467,3 +467,115 @@
     flex-direction: column;
   }
 }
+/* =========================================
+   HOMEPAGE DESIGN ENHANCEMENTS
+   Existing homepage content and styles preserved.
+========================================= */
+
+.header {
+  box-shadow: 0 4px 18px rgba(18, 60, 105, 0.06);
+}
+
+.logo {
+  background: linear-gradient(135deg, #123c69, #2585c7);
+  box-shadow: 0 5px 14px rgba(18, 60, 105, 0.2);
+}
+
+.nav a {
+  transition: all 0.25s ease;
+}
+
+.nav a:hover {
+  transform: translateY(-2px);
+}
+
+.loginButton {
+  box-shadow: 0 5px 14px rgba(18, 60, 105, 0.2);
+}
+
+.sideCard,
+.courseCard,
+.guideCard,
+.quickCard {
+  box-shadow: 0 5px 18px rgba(25, 55, 90, 0.045);
+  transition: all 0.25s ease;
+}
+
+.sideCard:hover {
+  box-shadow: 0 8px 22px rgba(25, 55, 90, 0.09);
+}
+
+.sideTitle {
+  background: linear-gradient(110deg, #123c69, #1765a3);
+}
+
+.hero {
+  background:
+    radial-gradient(circle at 90% 15%, rgba(255,255,255,.13), transparent 25%),
+    linear-gradient(120deg, #102f50, #1765a3 65%, #2585c7);
+  box-shadow: 0 12px 30px rgba(18, 60, 105, 0.16);
+}
+
+.hero h1 {
+  letter-spacing: -1px;
+}
+
+.primaryButton,
+.secondaryButton {
+  transition: all 0.25s ease;
+}
+
+.primaryButton:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 18px rgba(0,0,0,.15);
+}
+
+.secondaryButton:hover {
+  background: rgba(255,255,255,.15);
+  transform: translateY(-3px);
+}
+
+.courseCard,
+.guideCard {
+  border-radius: 16px;
+}
+
+.courseCard:hover,
+.guideCard:hover {
+  border-color: #a9c9e8;
+  box-shadow: 0 14px 28px rgba(25, 55, 90, .11);
+}
+
+.courseIcon {
+  background: linear-gradient(135deg, #eaf2fb, #d8eafa);
+  border-radius: 13px;
+}
+
+.quickCard {
+  border-radius: 12px;
+}
+
+.quickCard:hover {
+  transform: translateY(-4px);
+  border-color: #b4d1ec;
+  box-shadow: 0 10px 22px rgba(25, 55, 90, .09);
+}
+
+.contact {
+  background: linear-gradient(180deg, #ffffff, #f2f7fc);
+}
+
+.footer {
+  background: linear-gradient(110deg, #102f50, #123c69);
+}
+
+@media (max-width: 600px) {
+  .hero {
+    border-radius: 13px;
+  }
+
+  .courseCard,
+  .guideCard {
+    padding: 20px;
+  }
+}

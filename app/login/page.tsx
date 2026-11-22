@@ -1,4 +1,5 @@
-﻿"use client";
+﻿
+"use client";
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -15,7 +16,6 @@ export default function StudentLoginPage() {
 
   async function handleLogin(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-
     setError("");
 
     const identifier = usernameOrEmail.trim();
@@ -27,48 +27,86 @@ export default function StudentLoginPage() {
 
     setLoading(true);
 
-    let email = identifier;
+    try {
+      let email = identifier;
 
-    // Allow students to log in using either username or email.
-    if (!identifier.includes("@")) {
-      const { data: student, error: studentError } = await supabase
-        .from("students")
-        .select("email")
-        .eq("username", identifier)
-        .maybeSingle();
+      // Students can use their username or email.
+      // Teachers and administrators should use their email.
+      if (!identifier.includes("@")) {
+        const { data: student, error: studentError } = await supabase
+          .from("students")
+          .select("email")
+          .eq("username", identifier)
+          .maybeSingle();
 
-      if (studentError || !student?.email) {
+        if (studentError || !student?.email) {
+          setError("Invalid username/email or password.");
+          setLoading(false);
+          return;
+        }
+
+        email = student.email;
+      }
+
+      // Authenticate with Supabase.
+      const { error: loginError } =
+        await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+
+      if (loginError) {
         setError("Invalid username/email or password.");
         setLoading(false);
         return;
       }
 
-      email = student.email;
-    }
-
-    const { error: loginError } =
-      await supabase.auth.signInWithPassword({
-        email,
-        password,
+      // Verify the account role securely on the server.
+      const response = await fetch("/api/auth/role", {
+        method: "GET",
+        cache: "no-store",
       });
 
-    if (loginError) {
-      setError("Invalid username/email or password.");
+      const result = await response.json();
+
+      if (!response.ok) {
+        await supabase.auth.signOut();
+        setError(result.error || "Unable to verify your account.");
+        setLoading(false);
+        return;
+      }
+
+      const destinations: Record<string, string> = {
+        student: "/student",
+        teacher: "/teacher",
+        admin: "/admin",
+      };
+
+      const destination = destinations[result.role];
+
+      if (!destination) {
+        await supabase.auth.signOut();
+        setError("Your account role is not recognized.");
+        setLoading(false);
+        return;
+      }
+
+      // Preserve a valid requested page inside the user's dashboard.
+      const params = new URLSearchParams(window.location.search);
+      const redirect = params.get("redirect");
+
+      const allowedRedirect =
+        redirect &&
+        (redirect === destination ||
+          redirect.startsWith(destination + "/"));
+
+      router.replace(allowedRedirect ? redirect : destination);
+      router.refresh();
+    } catch (error) {
+      console.error("Login error:", error);
+      setError("Something went wrong. Please try again.");
       setLoading(false);
-      return;
     }
-
-    // Return to the page the student originally requested.
-    const params = new URLSearchParams(window.location.search);
-    const redirect = params.get("redirect");
-
-    if (redirect && redirect.startsWith("/student")) {
-      router.push(redirect);
-    } else {
-      router.push("/student");
-    }
-
-    router.refresh();
   }
 
   return (
@@ -176,7 +214,7 @@ export default function StudentLoginPage() {
           </div>
 
           <form onSubmit={handleLogin}>
-            {/* USERNAME */}
+            {/* USERNAME OR EMAIL */}
             <label
               htmlFor="username"
               style={{
@@ -334,7 +372,7 @@ export default function StudentLoginPage() {
               }}
             >
               Contact the school administration to create
-              your student account.
+              your school account.
             </p>
           </div>
 

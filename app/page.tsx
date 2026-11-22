@@ -1,4 +1,6 @@
-﻿import Link from "next/link";
+﻿
+import Link from "next/link";
+import styles from "./page.module.css";
 
 const categories = [
   {
@@ -30,517 +32,285 @@ const categories = [
 
 export default function HomePage() {
   return (
-    <main
-      style={{
-        minHeight: "100vh",
-        background: "#f5f6f8",
-        color: "#333",
-        fontFamily: "Arial, Helvetica, sans-serif",
-      }}
-    >
-      {/* ================= HEADER ================= */}
-      <header
-        style={{
-          background: "#ffffff",
-          borderBottom: "1px solid #ddd",
-        }}
-      >
-        <div
-          style={{
-            maxWidth: "1200px",
-            margin: "0 auto",
-            padding: "14px 24px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            gap: "20px",
-            flexWrap: "wrap",
-          }}
-        >
-          {/* SCHOOL LOGO / BRAND */}
-          <Link
-            href="/"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "12px",
-              textDecoration: "none",
-            }}
-          >
-            <div
-              style={{
-                width: "58px",
-                height: "58px",
-                borderRadius: "6px",
-                background: "#123c69",
-                color: "#fff",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontWeight: "800",
-                fontSize: "19px",
-                border: "3px solid #e6eef6",
-              }}
-            >
-              EP
-            </div>
-
+    <div className={styles.home}>
+      <header className={styles.header}>
+        <div className={styles.headerInner}>
+          <Link href="/" className={styles.brand}>
+            <div className={styles.logo}>EP</div>
             <div>
-              <strong
-                style={{
-                  display: "block",
-                  color: "#123c69",
-                  fontSize: "19px",
-                }}
-              >
-                EP APPEC
-              </strong>
-
-              <span
-                style={{
-                  display: "block",
-                  color: "#666",
-                  fontSize: "13px",
-                  marginTop: "2px",
-                }}
-              >
+              <span className={styles.brandName}>EP APPEC</span>
+              <span className={styles.brandSubtitle}>
                 Remera Rukoma E-Learning Platform
               </span>
             </div>
           </Link>
 
-          {/* NAVIGATION */}
-          <nav
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "22px",
-              flexWrap: "wrap",
-            }}
-          >
-            <a
-              href="#home"
-              style={{
-                color: "#123c69",
-                textDecoration: "none",
-                fontWeight: "700",
-                fontSize: "14px",
-              }}
-            >
-              Home
-            </a>
-
-            <Link
-              href="/student"
-              style={{
-                color: "#444",
-                textDecoration: "none",
-                fontSize: "14px",
-                fontWeight: "600",
-              }}
-            >
-              Student Dashboard
-            </Link>
-
-            <Link
-              href="/teacher"
-              style={{
-                color: "#444",
-                textDecoration: "none",
-                fontSize: "14px",
-                fontWeight: "600",
-              }}
-            >
-              Teacher Dashboard
-            </Link>
-
-            <Link
-              href="/admin"
-              style={{
-                color: "#444",
-                textDecoration: "none",
-                fontSize: "14px",
-                fontWeight: "600",
-              }}
-            >
-              Admin Dashboard
-            </Link>
-
-            <Link
-              href="/login"
-              style={{
-                background: "#123c69",
-                color: "#fff",
-                padding: "10px 18px",
-                borderRadius: "5px",
-                textDecoration: "none",
-                fontWeight: "700",
-                fontSize: "14px",
-              }}
-            >
+          <nav className={styles.nav} aria-label="Main navigation">
+            <Link href="/">Home</Link>
+            <Link href="/login">Admissions</Link>
+            <Link href="#guides">Online Guides</Link>
+            <Link href="/student/materials">E-Resources</Link>
+            <Link href="/student/courses">Online Courses</Link>
+            <Link href="/login" className={styles.loginButton}>
               Log in
             </Link>
           </nav>
         </div>
       </header>
 
-      {/* ================= MAIN ================= */}
-      <div
-        id="home"
-        style={{
-          maxWidth: "1200px",
-          margin: "0 auto",
-          padding: "28px 24px 45px",
-        }}
-      >
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "260px minmax(0, 1fr)",
-            gap: "25px",
-            alignItems: "start",
-          }}
-        >
-          {/* ================= LEFT SIDEBAR ================= */}
-          <aside
-            style={{
-              background: "#fff",
-              border: "1px solid #ddd",
-              borderRadius: "5px",
-              overflow: "hidden",
-            }}
-          >
-            <div
-              style={{
-                background: "#123c69",
-                color: "#fff",
-                padding: "16px 18px",
-                fontSize: "17px",
-                fontWeight: "700",
-              }}
-            >
-              Course categories
-            </div>
+      <main className={styles.main} id="home">
+        <div className={styles.container}>
+          <div className={styles.layout}>
+            <aside className={styles.sidebar}>
+              <section className={styles.sideCard}>
+                <div className={styles.sideTitle}>Learning Navigation</div>
+                <div className={styles.sideBody}>
+                  <Link href="/" className={styles.sideLink}>Home</Link>
+                  <Link href="/student" className={styles.sideLink}>Student Dashboard</Link>
+                  <Link href="/teacher" className={styles.sideLink}>Teacher Dashboard</Link>
+                  <Link href="/admin" className={styles.sideLink}>Administration</Link>
+                  <Link href="/student/courses" className={styles.sideLink}>All Courses</Link>
+                  <Link href="/student/materials" className={styles.sideLink}>Learning Materials</Link>
+                </div>
+              </section>
 
-            {categories.map((category) => (
-              <a
-                key={category.name}
-                href={`#${category.name
-                  .toLowerCase()
-                  .replace(/\s+/g, "-")}`}
-                style={{
-                  display: "block",
-                  padding: "14px 18px",
-                  borderBottom: "1px solid #eee",
-                  color: "#444",
-                  textDecoration: "none",
-                  fontSize: "14px",
-                }}
-              >
-                {category.name}
-              </a>
-            ))}
-
-            <Link
-              href="/student/courses"
-              style={{
-                display: "block",
-                padding: "15px 18px",
-                color: "#123c69",
-                textDecoration: "none",
-                fontWeight: "700",
-                fontSize: "14px",
-              }}
-            >
-              All courses ...
-            </Link>
-          </aside>
-
-          {/* ================= CONTENT ================= */}
-          <section>
-            {/* TITLE */}
-            <div
-              style={{
-                background: "#fff",
-                border: "1px solid #ddd",
-                borderRadius: "5px",
-                padding: "32px",
-                marginBottom: "22px",
-              }}
-            >
-              <div
-                style={{
-                  color: "#777",
-                  fontSize: "13px",
-                  marginBottom: "8px",
-                  fontWeight: "700",
-                  textTransform: "uppercase",
-                }}
-              >
-                EP APPEC REMERA RUKOMA
-              </div>
-
-              <h1
-                style={{
-                  margin: "0 0 12px",
-                  color: "#123c69",
-                  fontSize: "30px",
-                  lineHeight: "1.25",
-                }}
-              >
-                EP APPEC Remera Rukoma E-Learning Platform
-              </h1>
-
-              <p
-                style={{
-                  margin: 0,
-                  color: "#666",
-                  fontSize: "16px",
-                  lineHeight: "1.6",
-                }}
-              >
-                Welcome to our digital learning platform. Access your
-                courses, lessons, learning materials, assignments and
-                educational resources.
-              </p>
-            </div>
-
-            {/* SEARCH */}
-            <div
-              style={{
-                background: "#fff",
-                border: "1px solid #ddd",
-                borderRadius: "5px",
-                padding: "22px",
-                marginBottom: "25px",
-              }}
-            >
-              <h2
-                style={{
-                  margin: "0 0 15px",
-                  color: "#333",
-                  fontSize: "21px",
-                }}
-              >
-                Search courses
-              </h2>
-
-              <div
-                style={{
-                  display: "flex",
-                  gap: "10px",
-                  maxWidth: "700px",
-                }}
-              >
-                <input
-                  type="search"
-                  placeholder="Search courses..."
-                  style={{
-                    flex: 1,
-                    padding: "12px 14px",
-                    border: "1px solid #ccc",
-                    borderRadius: "5px",
-                    fontSize: "14px",
-                    boxSizing: "border-box",
-                  }}
-                />
-
-                <Link
-                  href="/student/courses"
-                  style={{
-                    background: "#123c69",
-                    color: "#fff",
-                    padding: "12px 20px",
-                    borderRadius: "5px",
-                    textDecoration: "none",
-                    fontWeight: "700",
-                    fontSize: "14px",
-                  }}
-                >
-                  Search
-                </Link>
-              </div>
-            </div>
-
-            {/* COURSE CATEGORIES */}
-            <div>
-              <h2
-                style={{
-                  margin: "0 0 6px",
-                  color: "#333",
-                  fontSize: "24px",
-                }}
-              >
-                Course categories
-              </h2>
-
-              <p
-                style={{
-                  margin: "0 0 18px",
-                  color: "#777",
-                  fontSize: "14px",
-                }}
-              >
-                Select a subject to continue learning.
-              </p>
-
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns:
-                    "repeat(auto-fit, minmax(210px, 1fr))",
-                  gap: "16px",
-                }}
-              >
-                {categories.map((category) => (
-                  <Link
-                    key={category.name}
-                    id={category.name
-                      .toLowerCase()
-                      .replace(/\s+/g, "-")}
-                    href="/student/courses"
-                    style={{
-                      background: "#fff",
-                      border: "1px solid #ddd",
-                      borderRadius: "5px",
-                      padding: "22px",
-                      textDecoration: "none",
-                      display: "block",
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: "46px",
-                        height: "46px",
-                        borderRadius: "5px",
-                        background: "#e8f0f8",
-                        color: "#123c69",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        fontWeight: "800",
-                        fontSize: "14px",
-                        marginBottom: "14px",
-                      }}
-                    >
-                      {category.icon}
-                    </div>
-
-                    <h3
-                      style={{
-                        margin: "0 0 8px",
-                        color: "#123c69",
-                        fontSize: "18px",
-                      }}
+              <section className={styles.sideCard}>
+                <div className={styles.sideTitle}>Course Categories</div>
+                <div className={styles.sideBody}>
+                  {categories.map((category) => (
+                    <Link
+                      key={category.name}
+                      href="/student/courses"
+                      className={styles.sideLink}
                     >
                       {category.name}
-                    </h3>
+                    </Link>
+                  ))}
+                </div>
+              </section>
 
-                    <p
-                      style={{
-                        margin: 0,
-                        color: "#777",
-                        fontSize: "13px",
-                        lineHeight: "1.5",
-                      }}
-                    >
-                      {category.description}
-                    </p>
+              <section className={styles.sideCard}>
+                <div className={styles.sideTitle}>Support Contacts</div>
+                <div className={styles.sideText}>
+                  EP APPEC Remera Rukoma
+                  <br />
+                  Email: epappec@gmail.com
+                  <br />
+                  Phone: 0792441035
+                </div>
+              </section>
+
+              <section className={styles.sideCard}>
+                <div className={styles.sideTitle}>Site News & Forum</div>
+                <div className={styles.sideBody}>
+                  <Link href="/login" className={styles.sideLink}>
+                    School Announcements
                   </Link>
-                ))}
-              </div>
+                  <Link href="/login" className={styles.sideLink}>
+                    Student Discussions
+                  </Link>
+                  <Link href="/login" className={styles.sideLink}>
+                    Teacher Updates
+                  </Link>
+                </div>
+              </section>
+
+              <section className={styles.sideCard}>
+                <div className={styles.sideTitle}>Activities & Resources</div>
+                <div className={styles.sideBody}>
+                  <Link href="/student/materials" className={styles.sideLink}>
+                    Learning Resources
+                  </Link>
+                  <Link href="/student/courses" className={styles.sideLink}>
+                    Online Lessons
+                  </Link>
+                  <Link href="/login" className={styles.sideLink}>
+                    Assignments
+                  </Link>
+                </div>
+              </section>
+
+              <section className={styles.sideCard}>
+                <div className={styles.sideTitle}>Upcoming Events</div>
+                <div className={styles.sideText}>
+                  School announcements and upcoming learning activities will
+                  be communicated through the school platform.
+                </div>
+              </section>
+
+              <section className={styles.sideCard}>
+                <div className={styles.sideTitle}>Online Access</div>
+                <div className={styles.sideBody}>
+                  <Link href="/login" className={styles.sideLink}>Log in</Link>
+                  <Link href="/login" className={styles.sideLink}>Calendar & Updates</Link>
+                </div>
+              </section>
+            </aside>
+
+            <div className={styles.content}>
+              <section className={styles.hero}>
+                <div className={styles.heroLabel}>
+                  EP APPEC REMERA RUKOMA · KAMONYI DISTRICT
+                </div>
+
+                <h1>
+                  Welcome to EP APPEC Remera Rukoma E-Learning Platform
+                </h1>
+
+                <p>
+                  Discover a better way to learn. Access online courses,
+                  lessons, educational resources and assignments in one
+                  convenient digital learning environment.
+                </p>
+
+                <div className={styles.heroActions}>
+                  <Link href="/login" className={styles.primaryButton}>
+                    Access Your Account
+                  </Link>
+                  <Link href="/student/courses" className={styles.secondaryButton}>
+                    Explore Courses
+                  </Link>
+                </div>
+              </section>
+
+              <section className={styles.section}>
+                <div className={styles.sectionHeading}>
+                  <h2>Welcome to Our School</h2>
+                  <p>
+                    Supporting teaching and learning through accessible
+                    digital education.
+                  </p>
+                </div>
+
+                <div className={styles.sideCard}>
+                  <div className={styles.sideText}>
+                    EP APPEC Remera Rukoma is located in Rukoma Sector,
+                    Kamonyi District, Rwanda. This platform provides learners
+                    and teachers with access to digital learning materials,
+                    courses and educational activities.
+                  </div>
+                </div>
+              </section>
+
+              <section className={styles.section}>
+                <div className={styles.sectionHeading}>
+                  <h2>Explore Course Categories</h2>
+                  <p>Select a subject to explore available learning content.</p>
+                </div>
+
+                <div className={styles.courseGrid}>
+                  {categories.map((category) => (
+                    <Link
+                      href="/student/courses"
+                      key={category.name}
+                      className={styles.courseCard}
+                    >
+                      <div className={styles.courseIcon}>
+                        {category.icon}
+                      </div>
+                      <h3>{category.name}</h3>
+                      <p>{category.description}</p>
+                    </Link>
+                  ))}
+                </div>
+              </section>
+
+              <section className={styles.section} id="guides">
+                <div className={styles.sectionHeading}>
+                  <h2>Online Guides & Manuals</h2>
+                  <p>
+                    Helpful guidance for using the school e-learning platform.
+                  </p>
+                </div>
+
+                <div className={styles.guideGrid}>
+                  <Link href="/login" className={styles.guideCard}>
+                    <h3>Student Guide</h3>
+                    <p>
+                      Learn how to access courses, study lessons, find
+                      materials and follow assignments.
+                    </p>
+                    <span>Access student area →</span>
+                  </Link>
+
+                  <Link href="/login" className={styles.guideCard}>
+                    <h3>Teacher Guide</h3>
+                    <p>
+                      Learn how to access teaching tools, courses, lessons
+                      and learning resources.
+                    </p>
+                    <span>Access teacher area →</span>
+                  </Link>
+                </div>
+              </section>
+
+              <section className={styles.section}>
+                <div className={styles.sectionHeading}>
+                  <h2>Quick Access</h2>
+                  <p>Choose your learning or administration area.</p>
+                </div>
+
+                <div className={styles.quickAccess}>
+                  <Link href="/student" className={styles.quickCard}>
+                    Student Portal →
+                  </Link>
+                  <Link href="/teacher" className={styles.quickCard}>
+                    Teacher Portal →
+                  </Link>
+                  <Link href="/admin" className={styles.quickCard}>
+                    Admin Portal →
+                  </Link>
+                </div>
+              </section>
             </div>
-          </section>
+          </div>
         </div>
-      </div>
+      </main>
 
-      {/* ================= CONTACT ================= */}
-      <section
-        id="contact"
-        style={{
-          background: "#fff",
-          borderTop: "1px solid #ddd",
-          padding: "32px 24px",
-        }}
-      >
-        <div
-          style={{
-            maxWidth: "1200px",
-            margin: "0 auto",
-          }}
-        >
-          <h2
-            style={{
-              margin: "0 0 16px",
-              color: "#123c69",
-              fontSize: "22px",
-            }}
-          >
-            Contact
-          </h2>
+      <section className={styles.contact} id="contact">
+        <div className={styles.container}>
+          <div className={styles.sectionHeading}>
+            <h2>Contact Our School</h2>
+            <p>Get in touch with EP APPEC Remera Rukoma.</p>
+          </div>
 
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: "25px",
-              color: "#555",
-              fontSize: "14px",
-            }}
-          >
-            <span>Remera Rukoma, Rwanda</span>
-            <span>Email: epappec@gmail.com</span>
-            <span>Phone: 0792441035</span>
+          <div className={styles.contactGrid}>
+            <div className={styles.contactItem}>
+              <strong>School Location</strong>
+              <span>Rukoma Sector, Kamonyi District, Rwanda</span>
+            </div>
+
+            <div className={styles.contactItem}>
+              <strong>Email Address</strong>
+              <span>epappec@gmail.com</span>
+            </div>
+
+            <div className={styles.contactItem}>
+              <strong>Telephone</strong>
+              <span>0792441035</span>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ================= FOOTER ================= */}
-      <footer
-        style={{
-          background: "#123c69",
-          color: "#fff",
-          padding: "25px 24px",
-        }}
-      >
-        <div
-          style={{
-            maxWidth: "1200px",
-            margin: "0 auto",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            gap: "20px",
-            flexWrap: "wrap",
-            fontSize: "13px",
-          }}
-        >
+      <footer className={styles.footer}>
+        <div className={`${styles.container} ${styles.footerInner}`}>
           <div>
             <strong>EP APPEC Remera Rukoma</strong>
-
-            <div style={{ marginTop: "5px", opacity: 0.8 }}>
-              E-Learning Platform
-            </div>
+            <div className={styles.footerMuted}>E-Learning Platform</div>
           </div>
 
-          <div style={{ opacity: 0.85 }}>
-            District Kamonyi · Sector Rukoma
+          <div className={styles.footerMuted}>
+            Kamonyi District · Rukoma Sector · Rwanda
           </div>
 
-          <div style={{ opacity: 0.85 }}>
-            <div style={{ opacity: 0.85 }}>
-  © 2026 EP APPEC Remera Rukoma
-  <div style={{ marginTop: "5px" }}>
-    Developed by NDORIMANA Gilbert
-  </div>
-</div>
-
-            <div style={{ marginTop: "5px" }}>
-              Developed by NDORIMANA Gilbert
-            </div>
+          <div className={styles.footerMuted}>
+            © 2026 EP APPEC Remera Rukoma
+            <br />
+            Developed by NDORIMANA Gilbert
           </div>
         </div>
       </footer>
-    </main>
+    </div>
   );
 }
